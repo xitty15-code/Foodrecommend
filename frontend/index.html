@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>校园美食推荐 - 发现身边好味道</title>
+    <link rel="stylesheet" href="./assets/css/common.css">
+    <style>
+        .view-section { display: none; margin-top: 30px; }
+        .view-section.active { display: block; }
+        .carousel { margin-top: 20px; position: relative; height: 350px; overflow: hidden; border-radius: 16px; background: #ddd; }
+        .carousel-container { display: flex; width: 100%; height: 100%; transition: transform 0.5s ease; }
+        .carousel button { position: absolute; top: 50%; transform: translateY(-50%); background: rgba(0,0,0,0.5); color: #fff; border: 0; width: 40px; height: 40px; cursor: pointer; font-size: 22px; border-radius: 50%; }
+        .carousel-prev { left: 10px; }
+        .carousel-next { right: 10px; }
+        .filter-box { background:#fff; padding:20px; border-radius:12px; box-shadow:0 2px 8px rgba(0,0,0,0.05); margin-bottom:25px; }
+        .filter-row { display:flex; gap:15px; margin-bottom:15px; align-items:center; flex-wrap: wrap; }
+        .filter-label { font-weight:bold; color:#666; width:80px; }
+        .tab { display:inline-block; padding: 7px 15px; background:#f5f7fa; border-radius: 20px; cursor:pointer; }
+        .tab.active { background:#ff8c42; color:#fff; }
+        .mode-all .taste-filter { display: none; }
+        .mode-category .category-filter { display: none; }
+        .rank-list { max-width: 800px; margin: 0 auto; background: #fff; border-radius: 16px; box-shadow: 0 4px 12px rgba(0,0,0,0.05); padding: 20px; }
+        .rank-item { display: flex; align-items: center; padding: 15px; border-bottom: 1px solid #f5f5f5; cursor: pointer; }
+        .rank-num { font-size: 24px; font-weight: bold; width: 50px; text-align: center; color: #999; }
+        .rank-img { width: 70px; height: 70px; border-radius: 8px; object-fit: cover; margin-right: 20px; }
+        .rank-info { flex: 1; }
+        .rank-name { font-size: 18px; font-weight: 600; margin-bottom: 5px; }
+        .rank-meta { font-size: 14px; color: #666; }
+        .rank-score { font-size: 20px; font-weight: bold; color: #ff8c42; }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="container">
+            <a href="index.html" class="logo">校园美食推荐</a>
+            <div class="nav-menu">
+                <a href="#" id="homeLink" class="active">首页</a>
+                <a href="#" id="allFoodsLink">全部美食</a>
+                <a href="#" id="rankLink">美食榜单</a>
+                <a href="profile.html">个人中心</a>
+            </div>
+            <div class="nav-right">
+                <div class="search-box">
+                    <input type="text" id="searchInput" placeholder="搜索美食...">
+                    <button id="searchBtn" aria-label="搜索">🔍</button>
+                </div>
+                <button class="btn-outline" onclick="window.location.href='login.html'">登录</button>
+                <button class="btn-primary" onclick="window.location.href='register.html'">注册</button>
+            </div>
+        </div>
+    </nav>
+
+    <main class="container">
+        <div id="homeView" class="view-section active">
+            <div class="carousel" id="carousel">
+                <div class="carousel-container" id="carouselContainer"></div>
+                <button class="carousel-prev" id="carouselPrev" aria-label="上一张">‹</button>
+                <button class="carousel-next" id="carouselNext" aria-label="下一张">›</button>
+            </div>
+
+            <section class="recommend-section" style="margin-top: 40px;">
+                <div class="section-title" style="display:flex; justify-content:space-between; align-items:center; margin-bottom:20px;">
+                    <h2>猜你喜欢 / 专属推荐</h2>
+                    <span style="font-size:14px; color:#666;">基于你的口味偏好智能推荐</span>
+                </div>
+                <div class="food-grid" id="recommendGrid"></div>
+            </section>
+        </div>
+
+        <div id="foodListView" class="view-section">
+            <h2 id="listTitle" style="margin: 25px 0 15px 0;">全部美食</h2>
+            <div class="filter-box">
+                <div class="filter-row category-filter">
+                    <span class="filter-label">美食品类</span>
+                    <div id="categoryTabs" style="display:flex; gap:10px; flex-wrap:wrap;">
+                        <span class="tab active" data-cate="">全部</span>
+                        <span class="tab" data-cate="早餐">早餐</span>
+                        <span class="tab" data-cate="中餐">中餐</span>
+                        <span class="tab" data-cate="晚餐">晚餐</span>
+                        <span class="tab" data-cate="小吃">小吃</span>
+                        <span class="tab" data-cate="汤类">汤类</span>
+                    </div>
+                </div>
+                <div class="filter-row taste-filter">
+                    <span class="filter-label">口味特点</span>
+                    <div id="tasteTabs" style="display:flex; gap:10px; flex-wrap:wrap;">
+                        <span class="tab active" data-taste="">全部口味</span>
+                        <span class="tab" data-taste="咸鲜">咸鲜</span>
+                        <span class="tab" data-taste="香辣">香辣</span>
+                        <span class="tab" data-taste="清淡">清淡</span>
+                        <span class="tab" data-taste="甜">甜</span>
+                        <span class="tab" data-taste="麻辣">麻辣</span>
+                    </div>
+                </div>
+            </div>
+            <div class="food-grid" id="foodGrid"></div>
+        </div>
+
+        <div id="rankView" class="view-section">
+            <div style="text-align:center; margin: 40px 0 20px 0;">
+                <h2>校园美食榜单</h2>
+                <p style="color:#666; margin-top:5px;">按评分、图片和价格信息综合排序</p>
+            </div>
+            <div class="rank-list" id="rankListContainer"></div>
+        </div>
+    </main>
+
+    <footer class="footer">
+        <div class="container"><p>© 2026 校园美食推荐系统</p></div>
+    </footer>
+
+    <script src="./assets/js/api.js"></script>
+    <script src="./assets/js/utils.js"></script>
+    <script>
+        var currentCategory = '';
+        var currentTaste = '';
+        var currentSearch = '';
+        var currentPageMode = 'all';
+        var carouselIndex = 0;
+        var carouselInterval = null;
+
+        function switchView(viewId, linkId) {
+            var views = document.querySelectorAll('.view-section');
+            for (var i = 0; i < views.length; i++) views[i].classList.remove('active');
+            document.getElementById(viewId).classList.add('active');
+
+            var links = document.querySelectorAll('.nav-menu a');
+            for (var j = 0; j < links.length; j++) links[j].classList.remove('active');
+            if (linkId) document.getElementById(linkId).classList.add('active');
+        }
+
+        function applyFoodPageMode() {
+            var view = document.getElementById('foodListView');
+            var title = document.getElementById('listTitle');
+            view.classList.remove('mode-all');
+            view.classList.remove('mode-category');
+            view.classList.add('mode-all');
+            title.textContent = '全部美食';
+        }
+
+        function resetActiveTabs() {
+            var categoryTabs = document.querySelectorAll('#categoryTabs .tab');
+            var tasteTabs = document.querySelectorAll('#tasteTabs .tab');
+            for (var i = 0; i < categoryTabs.length; i++) categoryTabs[i].classList.toggle('active', i === 0);
+            for (var k = 0; k < tasteTabs.length; k++) tasteTabs[k].classList.toggle('active', k === 0);
+        }
+
+        function loadLocalFallbackFoods() {
+            return fetch('./assets/data/home_fallback.json', { cache: 'no-store' }).then(function (response) {
+                return response.json();
+            });
+        }
+
+        function initNavLinks() {
+            document.getElementById('homeLink').onclick = function (e) {
+                e.preventDefault();
+                switchView('homeView', 'homeLink');
+            };
+            document.getElementById('allFoodsLink').onclick = function (e) {
+                e.preventDefault();
+                currentPageMode = 'all';
+                currentCategory = '';
+                currentTaste = '';
+                currentSearch = '';
+                resetActiveTabs();
+                applyFoodPageMode();
+                switchView('foodListView', 'allFoodsLink');
+                loadFoods();
+            };
+            document.getElementById('rankLink').onclick = function (e) {
+                e.preventDefault();
+                switchView('rankView', 'rankLink');
+                loadRankings();
+            };
+        }
+
+        function makeSlide(food) {
+            var detailLink = (food.id !== undefined && food.id !== null && food.id !== '') ? 'detail.html?id=' + food.id : '';
+            var html = '';
+            html += '<div style="flex:0 0 100%; width:100%; height:100%; position:relative;' + (detailLink ? ' cursor:pointer;' : '') + '"' + (detailLink ? ' onclick="window.location.href=\'' + detailLink + '\'"' : '') + '>';
+            html += '<img src="' + getFoodDisplayImage(food) + '" alt="' + getDisplayFoodName(food) + '" style="width:100%; height:100%; object-fit:cover;">';
+            html += '<div style="position:absolute; bottom:0; left:0; right:0; background:linear-gradient(transparent, rgba(0,0,0,0.8)); padding:20px; color:#fff;">';
+            html += '<h3 style="font-size:22px;">Top Pick: ' + getDisplayFoodName(food) + '</h3>';
+            html += '<p style="margin-top:5px; opacity:0.9;">Category: ' + (food.category || 'N/A') + ' | Rating: ' + getFoodRatingText(food) + '</p>';
+            html += '</div></div>';
+            return html;
+        }
+
+        function renderCarousel(foods) {
+            var container = document.getElementById('carouselContainer');
+            var slideFoods = (foods || []).slice(0, 4);
+            clearInterval(carouselInterval);
+            carouselIndex = 0;
+            resetFoodImageCache();
+            if (!slideFoods.length) {
+                container.innerHTML = '<div class="loading" style="width:100%">No carousel data</div>';
+                return;
+            }
+            var html = '';
+            for (var i = 0; i < slideFoods.length; i++) html += makeSlide(slideFoods[i]);
+            container.innerHTML = html;
+            carouselInterval = setInterval(nextSlide, 5000);
+        }
+
+        function showSlide(index) {
+            var container = document.getElementById('carouselContainer');
+            var count = container.children.length;
+            if (!count) return;
+            carouselIndex = (index + count) % count;
+            container.style.transform = 'translateX(-' + (carouselIndex * 100) + '%)';
+        }
+
+        function nextSlide() { showSlide(carouselIndex + 1); }
+        function prevSlide() { showSlide(carouselIndex - 1); }
+
+        function getLocalRecommendations() {
+            return loadLocalFallbackFoods().then(function (items) {
+                return { success: true, data: items };
+            });
+        }
+
+        function loadRecommendations() {
+            var user = getCurrentUser();
+            resetFoodImageCache();
+            return getRecommendations(user ? user.id : null).then(function (result) {
+                if (!result.success || !result.data || result.data.length === 0) {
+                    return getHotFoods();
+                }
+                return result;
+            }).then(function (result) {
+                if (!result.success || !result.data || result.data.length === 0) {
+                    return getLocalRecommendations();
+                }
+                return result;
+            }).then(function (result) {
+                var grid = document.getElementById('recommendGrid');
+                if (result.success && result.data && result.data.length > 0) {
+                    grid.innerHTML = result.data.map(function (item) { return createFoodCard(item); }).join('');
+                    renderCarousel(result.data);
+                } else {
+                    grid.innerHTML = '<div class="empty-state">No recommendations</div>';
+                }
+            });
+        }
+
+        function loadFoods() {
+            var grid = document.getElementById('foodGrid');
+            resetFoodImageCache();
+            grid.innerHTML = '<div class="loading">Loading...</div>';
+            return getFoods(currentCategory, currentSearch, 1, 24, currentTaste).then(function (result) {
+                if (result.success && result.data && result.data.length > 0) {
+                    grid.innerHTML = result.data.map(function (item) { return createFoodCard(item); }).join('');
+                } else {
+                    grid.innerHTML = '<div class="empty-state">No foods found</div>';
+                }
+            });
+        }
+
+        function loadRankings() {
+            var container = document.getElementById('rankListContainer');
+            resetFoodImageCache();
+            container.innerHTML = '<div class="loading">Loading...</div>';
+            return getHotFoods().then(function (result) {
+                if (result.success && result.data && result.data.length > 0) {
+                    container.innerHTML = result.data.map(function (item, index) {
+                        var priceText = formatPrice(item.price);
+                        var metaText = item.category || 'N/A';
+                        if (priceText) metaText += ' | ' + priceText;
+                        return '<div class="rank-item" onclick="window.location.href=\'detail.html?id=' + item.id + '\'">' +
+                            '<div class="rank-num">' + (index + 1) + '</div>' +
+                            '<img class="rank-img" src="' + getFoodDisplayImage(item) + '" alt="' + getDisplayFoodName(item) + '">' +
+                            '<div class="rank-info">' +
+                            '<div class="rank-name">' + getDisplayFoodName(item) + '</div>' +
+                            '<div class="rank-meta">' + metaText + '</div>' +
+                            '</div>' +
+                            '<div class="rank-score">★ ' + getFoodRatingText(item, 1) + '</div>' +
+                            '</div>';
+                    }).join('');
+                } else {
+                    container.innerHTML = '<div class="empty-state">No ranking data</div>';
+                }
+            });
+        }
+
+        function initFilters() {
+            document.getElementById('categoryTabs').onclick = function (e) {
+                if (!e.target.classList.contains('tab')) return;
+                var tabs = document.querySelectorAll('#categoryTabs .tab');
+                for (var i = 0; i < tabs.length; i++) tabs[i].classList.remove('active');
+                e.target.classList.add('active');
+                currentCategory = e.target.getAttribute('data-cate') || '';
+                currentPageMode = 'category';
+                applyFoodPageMode();
+                loadFoods();
+            };
+            document.getElementById('tasteTabs').onclick = function (e) {
+                if (!e.target.classList.contains('tab')) return;
+                var tabs = document.querySelectorAll('#tasteTabs .tab');
+                for (var i = 0; i < tabs.length; i++) tabs[i].classList.remove('active');
+                e.target.classList.add('active');
+                currentTaste = e.target.getAttribute('data-taste') || '';
+                currentPageMode = 'all';
+                applyFoodPageMode();
+                loadFoods();
+            };
+        }
+
+        function initSearch() {
+            function doSearch() {
+                var input = document.getElementById('searchInput');
+                if (!input) return;
+                currentSearch = input.value.trim();
+                switchView('foodListView', 'allFoodsLink');
+                currentPageMode = 'all';
+                applyFoodPageMode();
+                loadFoods();
+            }
+            var searchBtn = document.getElementById('searchBtn');
+            var searchInput = document.getElementById('searchInput');
+            if (searchBtn) searchBtn.onclick = doSearch;
+            if (searchInput) {
+                searchInput.onkeydown = function (e) {
+                    if (e.key === 'Enter') doSearch();
+                };
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', function () {
+            initNavLinks();
+            initFilters();
+            initSearch();
+            applyFoodPageMode();
+            var prevBtn = document.getElementById('carouselPrev');
+            var nextBtn = document.getElementById('carouselNext');
+            if (prevBtn) prevBtn.onclick = prevSlide;
+            if (nextBtn) nextBtn.onclick = nextSlide;
+
+            testAPIConnection().then(function (ok) {
+                return loadRecommendations();
+            });
+        });
+    </script>
+</body>
+</html>

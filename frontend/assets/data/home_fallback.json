@@ -1,0 +1,72 @@
+[
+  {
+    "id": null,
+    "food_name": "鲜肉小笼（知味观(下沙店)）",
+    "category": "江浙菜",
+    "price": 16,
+    "review": "知味观(下沙店)的招牌菜。位于弗雷德广场，环境不错，店员热情，菜品和糕点都很受欢迎。",
+    "rating": 4.0,
+    "original_taste": "门店：知味观(下沙店)；菜系：江浙菜；人均：36元",
+    "image_url": "https://images.unsplash.com/photo-1529692236671-f1f6cf9683ba?auto=format&fit=crop&w=600&q=80"
+  },
+  {
+    "id": null,
+    "food_name": "知味混沌（知味观(下沙店)）",
+    "category": "江浙菜",
+    "price": 12,
+    "review": "知味观(下沙店)的招牌菜。位于弗雷德广场，环境不错，店员热情，菜品和糕点都很受欢迎。",
+    "rating": 4.0,
+    "original_taste": "门店：知味观(下沙店)；菜系：江浙菜；人均：36元",
+    "image_url": "https://images.unsplash.com/photo-1546069901-ba9599a7e63c?auto=format&fit=crop&w=600&q=80"
+  },
+  {
+    "id": null,
+    "food_name": "片儿川（知味观(下沙店)）",
+    "category": "江浙菜",
+    "price": 20,
+    "review": "知味观(下沙店)的招牌菜。位于弗雷德广场，环境不错，店员热情，菜品和糕点都很受欢迎。",
+    "rating": 4.0,
+    "original_taste": "门店：知味观(下沙店)；菜系：江浙菜；人均：36元",
+    "image_url": "https://images.unsplash.com/photo-1546069901-ba9599a7e63c?auto=format&fit=crop&w=600&q=80"
+  },
+  {
+    "id": null,
+    "food_name": "猫耳朵（知味观(下沙店)）",
+    "category": "江浙菜",
+    "price": 8,
+    "review": "知味观(下沙店)的招牌菜。位于弗雷德广场，环境不错，店员热情，菜品和糕点都很受欢迎。",
+    "rating": 4.0,
+    "original_taste": "门店：知味观(下沙店)；菜系：江浙菜；人均：36元",
+    "image_url": "https://images.unsplash.com/photo-1546069901-ba9599a7e63c?auto=format&fit=crop&w=600&q=80"
+  },
+  {
+    "id": null,
+    "food_name": "糯米藕（知味观(下沙店)）",
+    "category": "江浙菜",
+    "price": 10,
+    "review": "知味观(下沙店)的招牌菜。位于弗雷德广场，环境不错，店员热情，菜品和糕点都很受欢迎。",
+    "rating": 4.0,
+    "original_taste": "门店：知味观(下沙店)；菜系：江浙菜；人均：36元",
+    "image_url": "https://images.unsplash.com/photo-1546069901-ba9599a7e63c?auto=format&fit=crop&w=600&q=80"
+  },
+  {
+    "id": null,
+    "food_name": "鲜肉小笼包（包笼天下(下沙店)）",
+    "category": "小吃快餐",
+    "price": 7,
+    "review": "包笼天下(下沙店)的招牌菜。现包现做，新鲜度不错，胡辣汤和葱油拌面一类的快手小吃很受欢迎。",
+    "rating": 3.6,
+    "original_taste": "门店：包笼天下(下沙店)；菜系：小吃快餐；人均：12元",
+    "image_url": "https://images.unsplash.com/photo-1559847844-5315695dadae?auto=format&fit=crop&w=600&q=80"
+  },
+  {
+    "id": null,
+    "food_name": "胡辣汤（包笼天下(下沙店)）",
+    "category": "汤类",
+    "price": 3,
+    "review": "包笼天下(下沙店)的招牌菜。现包现做，新鲜度不错，胡辣汤和葱油拌面一类的快手小吃很受欢迎。",
+    "rating": 3.6,
+    "original_taste": "门店：包笼天下(下沙店)；菜系：小吃快餐；人均：12元",
+    "image_url": "https://images.unsplash.com/photo-1569718212165-3a8278d5f624?auto=format&fit=crop&w=600&q=80"
+  }
+]

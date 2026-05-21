@@ -1,0 +1,132 @@
+[
+  {
+    "restaurant": "知味观(下沙店)",
+    "cuisine": "江浙菜",
+    "avg_cost": 36,
+    "rating": 4.0,
+    "source_url": "https://maps.apple.com/place?auid=1117323449034848&lsp=57879",
+    "review_summary": "位于弗雷德广场，环境不错，店员热情，菜品和糕点都很受欢迎。",
+    "items": [
+      {"name": "鲜肉小笼", "price": 16},
+      {"name": "知味混沌", "price": 12},
+      {"name": "片儿川", "price": 20},
+      {"name": "猫耳朵", "price": 8},
+      {"name": "糯米藕", "price": 10},
+      {"name": "牛肉粉丝", "price": 7},
+      {"name": "条头糕", "price": 14},
+      {"name": "三鲜小笼", "price": 22}
+    ]
+  },
+  {
+    "restaurant": "包笼天下(下沙店)",
+    "cuisine": "小吃快餐",
+    "avg_cost": 12,
+    "rating": 3.6,
+    "source_url": "https://maps.apple.com/place?auid=1118368772901442&lsp=57879",
+    "review_summary": "现包现做，新鲜度不错，胡辣汤和葱油拌面一类的快手小吃很受欢迎。",
+    "items": [
+      {"name": "鲜肉小笼包", "price": 7},
+      {"name": "胡辣汤", "price": 3},
+      {"name": "葱油拌面", "price": 7},
+      {"name": "煎饺煎包拼盘", "price": 13},
+      {"name": "水煮蛋", "price": 4},
+      {"name": "麻球", "price": 3},
+      {"name": "酱黄瓜", "price": 1},
+      {"name": "鲜肉馄饨", "price": 5}
+    ]
+  },
+  {
+    "restaurant": "虾吃虾涮(下沙店)",
+    "cuisine": "海鲜火锅",
+    "avg_cost": 54,
+    "rating": 3.7,
+    "source_url": "https://maps.apple.com/place?auid=1118368623062340&lsp=57879",
+    "review_summary": "开了很多年的店，招牌虾锅和手工面口碑不错，晚高峰建议错峰去。",
+    "items": [
+      {"name": "招牌虾大锅", "price": 118},
+      {"name": "手工面", "price": 6},
+      {"name": "招牌虾中锅", "price": 98},
+      {"name": "鸳鸯虾虾锅", "price": 88},
+      {"name": "澳式虾丸", "price": 13},
+      {"name": "相间肥牛", "price": 32},
+      {"name": "蒜蓉美味大虾", "price": 128},
+      {"name": "香辣龙虾", "price": 180}
+    ]
+  },
+  {
+    "restaurant": "李白图书馆餐厅(下沙大学店)",
+    "cuisine": "江浙菜",
+    "avg_cost": 115,
+    "rating": 4.4,
+    "source_url": "https://maps.apple.com/place?auid=1118692218993361&lsp=57879",
+    "review_summary": "装修有书卷气，服务热情，烤鸭和蟹粉类菜品是常被提到的推荐。",
+    "items": [
+      {"name": "李白茉莉烤鸭", "price": 188},
+      {"name": "椒盐鸭架", "price": 30},
+      {"name": "湘味小炒吊龙", "price": 78},
+      {"name": "云雾秘制醉大头虾", "price": 148},
+      {"name": "招牌蟹粉豆腐", "price": 68},
+      {"name": "大漠风沙烤羊排", "price": 85},
+      {"name": "山核桃牛仔粒", "price": 138},
+      {"name": "蟹粉小笼", "price": 68},
+      {"name": "李白蒸湖蟹", "price": 64}
+    ]
+  },
+  {
+    "restaurant": "水浒烤肉(下沙总店)",
+    "cuisine": "烧烤",
+    "avg_cost": 69,
+    "rating": 4.3,
+    "source_url": "https://maps.apple.com/place?auid=1118557439265166&lsp=57879",
+    "review_summary": "下沙口碑不错的烤肉店，肉量足，交通方便，适合朋友聚餐。",
+    "items": [
+      {"name": "五花肉", "price": 68},
+      {"name": "牛肉", "price": 68},
+      {"name": "羊肉", "price": 68},
+      {"name": "鸡翅", "price": 68},
+      {"name": "掌中宝", "price": 68},
+      {"name": "猪皮", "price": 68},
+      {"name": "培根金针菇", "price": 68},
+      {"name": "培根韭菜", "price": 68},
+      {"name": "鸡心", "price": 68}
+    ]
+  },
+  {
+    "restaurant": "西安肉夹馍(下沙宝龙二期店)",
+    "cuisine": "西北小吃",
+    "avg_cost": 10,
+    "rating": 4.3,
+    "source_url": "https://maps.apple.com/place?auid=1118368778367129&lsp=57879",
+    "review_summary": "靠近地铁和宝龙商圈，趁热吃最受欢迎，五花肉版本很有人气。",
+    "items": [
+      {"name": "肉夹馍", "price": 10},
+      {"name": "五花肉肉夹馍", "price": 23},
+      {"name": "五花肉", "price": 10},
+      {"name": "瘦肉", "price": 11},
+      {"name": "豆腐皮", "price": 3},
+      {"name": "烧烤面筋", "price": 2},
+      {"name": "西安凉皮", "price": 8},
+      {"name": "大鸡翅", "price": 8},
+      {"name": "卤肉", "price": 11}
+    ]
+  },
+  {
+    "restaurant": "全家福东北菜馆(下沙宝龙店)",
+    "cuisine": "东北菜",
+    "avg_cost": 44,
+    "rating": 3.8,
+    "source_url": "https://maps.apple.com/place?auid=1118786787370321&lsp=57879",
+    "review_summary": "就在大学城附近，家常硬菜很扎实，锅包肉和大拉皮都被反复提到。",
+    "items": [
+      {"name": "锅包肉", "price": 58},
+      {"name": "酸菜水饺", "price": 25},
+      {"name": "小鸡蘑菇炖粉条", "price": 53},
+      {"name": "土豆丝", "price": 16},
+      {"name": "酱扒茄子", "price": 28},
+      {"name": "炸蘑菇", "price": 35},
+      {"name": "雪衣豆沙", "price": 58},
+      {"name": "回锅肉", "price": 37},
+      {"name": "地三鲜", "price": 28}
+    ]
+  }
+]

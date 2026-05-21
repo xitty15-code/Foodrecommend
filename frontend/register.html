@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>注册 - 校园美食推荐</title>
+    <link rel="stylesheet" href="./assets/css/common.css">
+    <style>
+        .register-container { max-width: 550px; margin: 60px auto; padding: 40px; background: white; border-radius: 24px; box-shadow: 0 8px 24px rgba(0,0,0,0.1); }
+        .register-title { text-align: center; font-size: 28px; font-weight: 700; margin-bottom: 24px; color: #333; }
+        .form-group { margin-bottom: 20px; }
+        .form-group label { display: block; margin-bottom: 8px; font-weight: 500; color: #333; }
+        .form-group input[type="text"], .form-group input[type="password"] { width: 100%; padding: 12px 16px; border: 1px solid #E0E0E0; border-radius: 12px; font-size: 14px; }
+        .checkbox-group { display: flex; flex-wrap: wrap; gap: 16px; padding: 8px 0; }
+        .checkbox-group label { display: flex; align-items: center; gap: 6px; font-weight: normal; cursor: pointer; }
+        .register-btn { width: 100%; padding: 14px; background: #FF8C42; color: white; border: 0; border-radius: 40px; font-size: 16px; font-weight: 600; cursor: pointer; margin-top: 10px; }
+        .login-link, .back-home { text-align: center; margin-top: 24px; color: #666; }
+        .login-link a, .back-home a { color: #FF8C42; text-decoration: none; }
+        .hint { font-size: 12px; color: #999; margin-top: 5px; }
+    </style>
+</head>
+<body>
+    <div class="register-container">
+        <div class="register-title">校园美食推荐</div>
+        <div class="register-title" style="font-size: 22px; margin-top: -12px;">注册账号 · 定制口味</div>
+
+        <form id="registerForm">
+            <div class="form-group">
+                <label for="username">用户名 *</label>
+                <input type="text" id="username" placeholder="请输入用户名" required>
+            </div>
+            <div class="form-group">
+                <label for="password">密码 *</label>
+                <input type="password" id="password" placeholder="请输入密码" required>
+            </div>
+
+            <div class="form-group">
+                <label>口味偏好（可多选）</label>
+                <div class="checkbox-group" id="tasteGroup">
+                    <label><input type="checkbox" value="酸甜"> 酸甜</label>
+                    <label><input type="checkbox" value="清淡"> 清淡</label>
+                    <label><input type="checkbox" value="微辣"> 微辣</label>
+                    <label><input type="checkbox" value="重辣"> 重辣</label>
+                    <label><input type="checkbox" value="咸鲜"> 咸鲜</label>
+                    <label><input type="checkbox" value="酱香"> 酱香</label>
+                    <label><input type="checkbox" value="鲜香"> 鲜香</label>
+                    <label><input type="checkbox" value="酥脆"> 酥脆</label>
+                </div>
+                <div class="hint">选择喜欢的口味，推荐会更贴近你的偏好</div>
+            </div>
+
+            <div class="form-group">
+                <label>菜品类型偏好（可多选）</label>
+                <div class="checkbox-group" id="foodTypeGroup">
+                    <label><input type="checkbox" value="米饭"> 米饭</label>
+                    <label><input type="checkbox" value="面食"> 面食</label>
+                    <label><input type="checkbox" value="米粉"> 米粉</label>
+                    <label><input type="checkbox" value="快餐"> 快餐</label>
+                    <label><input type="checkbox" value="家常菜"> 家常菜</label>
+                    <label><input type="checkbox" value="烧烤"> 烧烤</label>
+                    <label><input type="checkbox" value="小吃"> 小吃</label>
+                    <label><input type="checkbox" value="汤类"> 汤类</label>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label>饮食忌口（可多选）</label>
+                <div class="checkbox-group" id="avoidGroup">
+                    <label><input type="checkbox" value="不吃辣"> 不吃辣</label>
+                    <label><input type="checkbox" value="不吃甜"> 不吃甜</label>
+                    <label><input type="checkbox" value="素食"> 素食</label>
+                    <label><input type="checkbox" value="忌油腻"> 忌油腻</label>
+                </div>
+                <div class="hint">系统会过滤你不喜欢的食物</div>
+            </div>
+
+            <button type="submit" class="register-btn">立即注册</button>
+        </form>
+
+        <div class="login-link">已有账号？<a href="login.html">去登录</a></div>
+        <div class="back-home"><a href="index.html">返回首页</a></div>
+    </div>
+
+    <footer class="footer"><div class="container"><p>© 2026 校园美食推荐系统</p></div></footer>
+
+    <script src="./assets/js/api.js"></script>
+    <script src="./assets/js/utils.js"></script>
+    <script>
+        document.getElementById('registerForm').addEventListener('submit', async e => {
+            e.preventDefault();
+            const username = document.getElementById('username').value.trim();
+            const password = document.getElementById('password').value;
+            if (!username || !password) {
+                showMessage('请填写用户名和密码', 'error');
+                return;
+            }
+            if (password.length < 3) {
+                showMessage('密码长度至少 3 位', 'error');
+                return;
+            }
+
+            const taste = Array.from(document.querySelectorAll('#tasteGroup input:checked')).map(cb => cb.value).join(',');
+            const foodType = Array.from(document.querySelectorAll('#foodTypeGroup input:checked')).map(cb => cb.value).join(',');
+            const avoid = Array.from(document.querySelectorAll('#avoidGroup input:checked')).map(cb => cb.value).join(',');
+            const result = await register(username, password, taste, foodType, avoid);
+
+            if (result.success) {
+                showMessage('注册成功，正在跳转登录页');
+                setTimeout(() => { window.location.href = 'login.html'; }, 1000);
+            } else {
+                showMessage(result.msg || '注册失败', 'error');
+            }
+        });
+
+        if (getCurrentUser()) window.location.href = 'index.html';
+    </script>
+</body>
+</html>

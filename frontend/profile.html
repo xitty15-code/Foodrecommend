@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>个人中心 - 校园美食推荐</title>
+    <link rel="stylesheet" href="./assets/css/common.css">
+    <style>
+        .profile-container { max-width: 1200px; margin: 40px auto; padding: 0 20px; }
+        .profile-sidebar { background: #fff; border-radius: 16px; padding: 24px; margin-bottom: 24px; text-align: center; }
+        .avatar { width: 80px; height: 80px; background: #FF8C42; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 12px; font-size: 32px; color: #fff; }
+        .profile-username { font-size: 20px; font-weight: 600; }
+        .profile-tabs { display: flex; gap: 8px; margin-bottom: 24px; border-bottom: 1px solid #E0E0E0; flex-wrap: wrap; }
+        .profile-tab { padding: 12px 24px; background: none; border: 0; cursor: pointer; font-size: 14px; font-weight: 500; color: #666; }
+        .profile-tab.active { color: #FF8C42; border-bottom: 2px solid #FF8C42; }
+        .preference-form, .history-list, .favorites-list { background: #fff; border-radius: 16px; padding: 24px; }
+        .form-group { margin-bottom: 20px; }
+        .form-group label { display: block; margin-bottom: 8px; font-weight: 500; color: #333; }
+        .checkbox-group { display: flex; flex-wrap: wrap; gap: 16px; }
+        .checkbox-group label { display: flex; align-items: center; gap: 6px; font-weight: normal; cursor: pointer; }
+        .history-item, .favorite-item { display: flex; gap: 16px; padding: 16px; border-bottom: 1px solid #F0F0F0; cursor: pointer; }
+        .history-item:hover, .favorite-item:hover { background: #F9F9F9; }
+        .history-item img, .favorite-item img { width: 80px; height: 80px; object-fit: cover; border-radius: 12px; }
+        .history-info, .favorite-info { flex: 1; }
+        .history-name, .favorite-name { font-weight: 600; margin-bottom: 4px; }
+        .history-meta, .favorite-meta { font-size: 13px; color: #999; }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="container">
+            <a href="index.html" class="logo">校园美食推荐</a>
+            <div class="nav-menu">
+                <a href="index.html">首页</a>
+                <a href="profile.html" class="active">个人中心</a>
+            </div>
+            <div class="nav-right"></div>
+        </div>
+    </nav>
+
+    <div class="profile-container" id="profileContainer">
+        <div class="loading">加载中...</div>
+    </div>
+
+    <footer class="footer"><div class="container"><p>© 2026 校园美食推荐系统</p></div></footer>
+
+    <script src="./assets/js/api.js"></script>
+    <script src="./assets/js/utils.js"></script>
+    <script>
+        let profileUser = null;
+        let currentTab = 'preference';
+
+        function checkLogin() {
+            profileUser = getCurrentUser();
+            if (!profileUser) {
+                showMessage('请先登录', 'error');
+                setTimeout(() => { window.location.href = 'login.html'; }, 1000);
+                return false;
+            }
+            return true;
+        }
+
+        async function renderProfile() {
+            if (!checkLogin()) return;
+            const freshProfile = await getUserProfile(profileUser.id);
+            if (freshProfile.success && freshProfile.user) {
+                profileUser = freshProfile.user;
+                localStorage.setItem('currentUser', JSON.stringify(profileUser));
+            }
+
+            document.getElementById('profileContainer').innerHTML = `
+                <div class="profile-sidebar">
+                    <div class="avatar">👤</div>
+                    <div class="profile-username">${profileUser.username}</div>
+                </div>
+                <div class="profile-tabs">
+                    <button class="profile-tab ${currentTab === 'preference' ? 'active' : ''}" data-tab="preference">口味偏好设置</button>
+                    <button class="profile-tab ${currentTab === 'favorites' ? 'active' : ''}" data-tab="favorites">我的收藏</button>
+                    <button class="profile-tab ${currentTab === 'history' ? 'active' : ''}" data-tab="history">浏览记录</button>
+                </div>
+                <div id="profileContent"></div>
+            `;
+
+            document.querySelectorAll('.profile-tab').forEach(tab => {
+                tab.onclick = () => {
+                    currentTab = tab.dataset.tab;
+                    renderProfile();
+                };
+            });
+
+            if (currentTab === 'preference') renderPreference();
+            if (currentTab === 'favorites') loadFavorites();
+            if (currentTab === 'history') loadHistory();
+        }
+
+        function preferenceOptions(id, values) {
+            return values.map(value => `<label><input type="checkbox" value="${value}"> ${value}</label>`).join('');
+        }
+
+        function renderPreference() {
+            document.getElementById('profileContent').innerHTML = `
+                <div class="preference-form">
+                    <h3 style="margin-bottom: 20px;">修改口味偏好</h3>
+                    <div class="form-group">
+                        <label>口味偏好（可多选）</label>
+                        <div class="checkbox-group" id="tasteGroup">${preferenceOptions('tasteGroup', ['酸甜','清淡','微辣','重辣','咸鲜','酱香','鲜香','酥脆'])}</div>
+                    </div>
+                    <div class="form-group">
+                        <label>菜品类型偏好（可多选）</label>
+                        <div class="checkbox-group" id="foodTypeGroup">${preferenceOptions('foodTypeGroup', ['米饭','面食','米粉','快餐','家常菜','烧烤','小吃','汤类'])}</div>
+                    </div>
+                    <div class="form-group">
+                        <label>饮食忌口（可多选）</label>
+                        <div class="checkbox-group" id="avoidGroup">${preferenceOptions('avoidGroup', ['不吃辣','不吃甜','素食','忌油腻'])}</div>
+                    </div>
+                    <button class="btn-primary" id="savePreferenceBtn">保存修改</button>
+                </div>
+            `;
+            setCurrentPreferences();
+            document.getElementById('savePreferenceBtn').onclick = savePreference;
+        }
+
+        function setCurrentPreferences() {
+            const normalize = value => (value === '饮料' || value === '饮品') ? '汤类' : value;
+            const tasteValues = (profileUser.taste || '').split(',').filter(Boolean).map(normalize);
+            const foodTypeValues = (profileUser.food_type || '').split(',').filter(Boolean).map(normalize);
+            const avoidValues = (profileUser.avoid || '').split(',').filter(Boolean);
+            document.querySelectorAll('#tasteGroup input').forEach(cb => { cb.checked = tasteValues.includes(cb.value); });
+            document.querySelectorAll('#foodTypeGroup input').forEach(cb => { cb.checked = foodTypeValues.includes(cb.value); });
+            document.querySelectorAll('#avoidGroup input').forEach(cb => { cb.checked = avoidValues.includes(cb.value); });
+        }
+
+        async function savePreference() {
+            const taste = Array.from(document.querySelectorAll('#tasteGroup input:checked')).map(cb => cb.value).join(',');
+            const foodType = Array.from(document.querySelectorAll('#foodTypeGroup input:checked')).map(cb => cb.value).join(',');
+            const avoid = Array.from(document.querySelectorAll('#avoidGroup input:checked')).map(cb => cb.value).join(',');
+            const result = await updatePreference(profileUser.id, taste, foodType, avoid);
+            if (result.success) {
+                profileUser = { ...profileUser, taste, food_type: foodType, avoid };
+                localStorage.setItem('currentUser', JSON.stringify(profileUser));
+                showMessage('偏好设置已保存');
+            } else {
+                showMessage(result.msg || '保存失败', 'error');
+            }
+        }
+
+        function renderFoodRows(items, type) {
+            return items.map(item => `
+                <div class="${type}-item" onclick="window.location.href='detail.html?id=${item.id}'">
+                    <img src="${normalizeImageUrl(item.image_url, getFoodFallbackImage(item))}" alt="${getDisplayFoodName(item)}" onerror="this.src='${getFoodFallbackImage(item)}'">
+                    <div class="${type}-info">
+                        <div class="${type}-name">${getDisplayFoodName(item)}</div>
+                        <div class="${type}-meta">${(item.category || '暂无分类')}${formatPrice(item.price) ? ' | ' + formatPrice(item.price) : ''} | ★ ${getFoodRatingText(item)}</div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        async function loadFavorites() {
+            document.getElementById('profileContent').innerHTML = '<div class="favorites-list" id="favoritesList"><div class="loading">加载收藏中...</div></div>';
+            const result = await getFavorites(profileUser.id);
+            const container = document.getElementById('favoritesList');
+            if (result.success && result.data && result.data.length > 0) {
+                container.innerHTML = renderFoodRows(result.data, 'favorite');
+            } else {
+                container.innerHTML = `<div class="empty-state">${result.msg || '暂无收藏，去首页收藏喜欢的美食吧'}</div>`;
+            }
+        }
+
+        async function loadHistory() {
+            document.getElementById('profileContent').innerHTML = '<div class="history-list" id="historyList"><div class="loading">加载浏览记录中...</div></div>';
+            const result = await getHistory(profileUser.id);
+            const container = document.getElementById('historyList');
+            if (result.success && result.data && result.data.length > 0) {
+                container.innerHTML = renderFoodRows(result.data, 'history');
+            } else {
+                container.innerHTML = `<div class="empty-state">${result.msg || '暂无浏览记录，去探索更多美食吧'}</div>`;
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', renderProfile);
+    </script>
+</body>
+</html>
