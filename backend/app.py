@@ -251,6 +251,7 @@ def apply_avoid_filter(sql, avoid):
 
 
 @app.route('/')
+@app.route('/index.html')
 def index():
     return send_from_directory(FRONTEND_DIR, 'index.html')
 
